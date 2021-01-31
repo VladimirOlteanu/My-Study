@@ -37,35 +37,50 @@ server <- function(input, output) {
     
     # draw scatter plot per the country of choice
     
-    plot1<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_POSITIVE_CASES_COUNT), color='blue')+
-      geom_line()+
+    plot1<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_POSITIVE_CASES_COUNT))+
+      geom_line(color='blue')+
       theme_classic()+
-      theme(axis.title = element_text(size = 17, face = 'bold'))+
+      theme(axis.title = element_text(size = 12, face = 'bold'))+
       xlab('Date reported')+
       ylab('Nb. of positive cases')
     
-    plot2<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_POSITIVE_NEW_CASES_COUNT) , color='blue')+
-      geom_line()+
+    plot2<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_POSITIVE_NEW_CASES_COUNT))+
+      geom_line(color='blue')+
       theme_classic()+
-      theme(axis.title = element_text(size = 17, face = 'bold'))+
+      theme(axis.title = element_text(size = 12, face = 'bold'))+
       xlab('Date reported')+
       ylab('Nb. of new cases')
     
-    plot3<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_DEATH_COUNT), color='red')+
-      geom_line()+
+    plot3<-ggplot(covid19_country_data, aes(x=PEOPLE_POSITIVE_NEW_CASES_COUNT))+
+      geom_density(color='darkblue', fill='lightblue')+
+      xlab("Nb. of new cases")+ 
+      geom_vline(aes(xintercept=mean(PEOPLE_POSITIVE_NEW_CASES_COUNT)), color='blue', linetype='dashed', size=1)+
+      theme(axis.title = element_text(size = 12))+ 
+      theme_classic()
+    
+    plot4<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_DEATH_COUNT))+
+      geom_line(color='red')+
       theme_classic()+
-      theme(axis.title = element_text(size = 17, face = 'bold')) +
+      theme(axis.title = element_text(size = 12, face = 'bold'))+
       xlab('Date reported')+
       ylab('Nb. of deaths')
     
-    plot4<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_DEATH_NEW_COUNT) , color='red')+
-      geom_line()+
+    plot5<-ggplot(covid19_country_data,aes(x=REPORT_DATE,y=PEOPLE_DEATH_NEW_COUNT))+
+      geom_line(color='red')+
       theme_classic()+
-      theme(axis.title = element_text(size = 8, face = 'bold')) +
+      theme(axis.title = element_text(size = 12, face = 'bold'))+
       xlab('Date reported')+
       ylab('Nb. of new deaths')
     
-    grid.arrange(plot1, plot2, plot3, plot4, nrow=2, ncol=2)
+     plot6<-ggplot(covid19_country_data, aes(x=PEOPLE_DEATH_NEW_COUNT))+
+      geom_density(color='black', fill='red')+
+      xlab('Nb. of new deaths')+
+      geom_vline(aes(xintercept=mean(PEOPLE_DEATH_NEW_COUNT)),color='black', linetype='dashed', size=1)+
+      theme(text = element_text(size = 12))+
+      theme_classic()
+      
+    
+    grid.arrange(plot1, plot2, plot3, plot4, plot5, plot6, nrow=3, ncol=3)
     
   })
 }
