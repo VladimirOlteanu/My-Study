@@ -1,11 +1,11 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Credit Card Default Probability Prediction-with Machine Learning (Ensemble Approach) and Deep Learning in Databricks (with PySpark)
+# MAGIC # Credit Card Default Probability Prediction- with Machine Learning and Deep Learning in Databricks (with PySpark)
 # MAGIC 
 # MAGIC ## Introduction
 # MAGIC In this project I attempted to predict the default probability for clients in a retail portolio with Dataricks in a PySpark environment. I read the input data from an S3 bucket in my AWS account and wrote some of the outputs to the same location in S3. I employed several Machine Learning techniques (and Deep Learning) to see which model has the best AUROC. I used additional feature engineering techniques such as univariate outlier detection together with winsorizing, normalisation (scaling), PCA for dimensionality reduction and the Yeo-Johnson transform. Due to the high correlation of the billing amount variables between each-other at diferent points in time (autocorrelation), I decided to use PCA to de-correlate them.
 # MAGIC 
-# MAGIC The last step after creating the final training and test datasets was to develop several default probability prediction models while using an ensemble approcach, a horse race between several Machine Learning models and a feed-forward neural network, tune them and assess their discriminative power. I also visualised the Shapley values of the Gradient Booster Classifier and the Extreme Gradient Booster Classifier in order to analyse how each of the variables affects the probability that the client defaults next month.
+# MAGIC The last step after creating the final training and test datasets was to develop several default probability prediction models (Machine Learning and Deep Learning models), tune them and assess their discriminative power and compare them in a horse race. I also visualised the Shapley values of the Gradient Booster Classifier and the Extreme Gradient Booster Classifier in order to analyse how each of the variables affects the probability that the client defaults next month.
 # MAGIC 
 # MAGIC ## Overview¶
 # MAGIC 1. Data Exploration and Pre-processing
@@ -102,6 +102,11 @@ np.any(np.isnan(data.toPandas()))
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC There are no missing values.
+
+# COMMAND ----------
+
 data.drop_duplicates()
 data.toPandas().describe()
 
@@ -124,13 +129,9 @@ data.show(5)
 
 # COMMAND ----------
 
-# With this registered as a temp view, it will only be available to this particular notebook. If you'd like other users to be able to query this table, you can also create a table from the DataFrame.
-# Once saved, this table will persist across cluster restarts as well as allow various users across different notebooks to query this data.
-# To do so, choose your table name and uncomment the bottom line.
+permanent_table_name = "UCI_Credit_Card_csv"
 
-#permanent_table_name = "UCI_Credit_Card_csv"
-
-#data.write.format("parquet").saveAsTable(permanent_table_name)'''
+data.write.format("parquet").saveAsTable(permanent_table_name)
 
 # COMMAND ----------
 
